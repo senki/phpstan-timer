@@ -1,0 +1,20 @@
+/phpstan-issue8146/src/Entity/Traits/TimestampTrait.php
+--- consumed 0 B, total 38 MB, took 0.03 s
+/phpstan-issue8146/src/Entity/Traits/CreatedTrait.php
+--- consumed 6 MB, total 44 MB, took 0.27 s
+/phpstan-issue8146/src/Entity/Traits/IdTrait.php
+--- consumed 0 B, total 44 MB, took 0.00 s
+/phpstan-issue8146/src/Entity/Traits/UpdatedTrait.php
+--- consumed 0 B, total 44 MB, took 0.00 s
+/phpstan-issue8146/src/Entity/Settlement.php
+--- consumed 24 MB, total 68 MB, took 0.60 s
+/phpstan-issue8146/src/Entity/County.php
+--- consumed 2 MB, total 70 MB, took 0.06 s
+/phpstan-issue8146/src/Entity/Constituency.php
+--- consumed 0 B, total 70 MB, took 0.06 s
+/phpstan-issue8146/src/DataFixtures/LocationFixtures.php
+--- consumed 104 MB, total 174 MB, took 127.23 s
+/phpstan-issue8146/src/Kernel.php
+--- consumed 0 B, total 174 MB, took 0.11 s
+
+ [OK] No errors
