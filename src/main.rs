@@ -5,17 +5,17 @@
 #![deny(clippy::cargo)]
 
 use regex::Regex;
-use simple_eyre::eyre::{bail, Result};
-use std::env::args;
-use std::fs::File;
-use std::io::{BufRead, BufReader, Lines};
+use simple_eyre::eyre;
+use std::env;
+use std::fs;
+use std::io::{self, BufRead};
 
-fn main() -> Result<()> {
+fn main() -> eyre::Result<()> {
     simple_eyre::install()?;
 
-    let args: Vec<String> = args().collect();
+    let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
-        bail!("Missing file path argument.");
+        eyre::bail!("Missing file path argument.");
     }
     let file_path = &args[1];
 
@@ -26,7 +26,7 @@ fn main() -> Result<()> {
     for (index, line) in read_lines(file_path)?.enumerate() {
         line_string = match line {
             Ok(line) => line,
-            Err(error) => bail!("Could not read line {index} >> {error}"),
+            Err(error) => eyre::bail!("Could not read line {index} >> {error}"),
         };
         let line_str = trim(line_string.as_str());
 
@@ -41,7 +41,7 @@ fn main() -> Result<()> {
 
         let duration = match get_duration(line_str) {
             Ok(duration) => duration,
-            Err(error) => bail!("Could not get `duration` from line {index} >> {error}"),
+            Err(error) => eyre::bail!("Could not get `duration` from line {index} >> {error}"),
         };
         if let Some(name) = filename {
             files.push((duration, name));
@@ -65,12 +65,12 @@ fn main() -> Result<()> {
 /// Read `file_path` one line at a time.
 ///
 /// SEE: <https://doc.rust-lang.org/rust-by-example/std_misc/file/read_lines.html>
-fn read_lines(file_path: &String) -> Result<Lines<BufReader<File>>> {
-    let file = match File::open(file_path) {
+fn read_lines(file_path: &String) -> eyre::Result<io::Lines<io::BufReader<fs::File>>> {
+    let file = match fs::File::open(file_path) {
         Ok(file) => file,
-        Err(error) => bail!("Could not open `{file_path}` >> {error}"),
+        Err(error) => eyre::bail!("Could not open `{file_path}` >> {error}"),
     };
-    Ok(BufReader::new(file).lines())
+    Ok(io::BufReader::new(file).lines())
 }
 
 /// Strip whitespace from the beginning and end of a `&str`.
@@ -84,14 +84,14 @@ fn trim(line_str: &str) -> &str {
 
 /// Get the duration as `f64` from a `&str`.
 /// Returns `0.0` if no duration is found.
-fn get_duration(line_str: &str) -> Result<f64> {
+fn get_duration(line_str: &str) -> eyre::Result<f64> {
     let r = Regex::new(r"took ([\d.]+) s")?;
 
     if let Some(captures) = r.captures(line_str) {
         if let Some(matches) = captures.get(1) {
             return match matches.as_str().parse::<f64>() {
                 Ok(duration) => Ok(duration),
-                Err(error) => bail!("`{}` not a number >> {}", matches.as_str(), error),
+                Err(error) => eyre::bail!("`{}` not a number >> {}", matches.as_str(), error),
             };
         }
     }
