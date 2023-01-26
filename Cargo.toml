@@ -2,9 +2,16 @@
 name = "phpstan-timer"
 version = "0.1.0"
 edition = "2021"
+description = "load timer data from phpstan log"
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/senki/phpstan-timer"
+keywords = ["learning"]
+categories = ["learning"]
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-regex = "1"
-"lazy_static" = "1"
+regex = "1.7"
+simple-eyre = "0.3"
